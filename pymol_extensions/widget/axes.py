@@ -159,3 +159,20 @@ def axes(name="axes"):
 
 
 cmd.extend("axes", axes)
+
+
+def axes_in_place():
+    from ..mark.arrow import arrow_pass
+
+    arrow_pass(
+        0, 0, 0, 1, 0, 0, name="X_axis", r_color=1, g_color=0, b_color=0, length=20
+    )
+    arrow_pass(
+        0, 0, 0, 0, 1, 0, name="Y_axis", r_color=0, g_color=1, b_color=0, length=20
+    )
+    arrow_pass(
+        0, 0, 0, 0, 0, 1, name="Z_axis", r_color=0, g_color=0, b_color=1, length=20
+    )
+
+
+cmd.extend("axes_in_place", axes_in_place)
