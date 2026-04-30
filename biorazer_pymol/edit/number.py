@@ -1,10 +1,36 @@
 from pymol import cmd
 
 
-def renumber_residue_continuously(selection: str):
+def renumber_residue_continuously(selection: str, start_resi: int | None = None):
     """
-    Renumber the selection continuously.
-    - Selection should come from a single chain
+    DESCRIPTION
+
+    Renumber residues in a selection so that residue IDs become continuous.
+
+    The input selection may contain discontinuous residue numbering, such as
+    1-10 and 15-20, but it must come from a single chain.
+
+    USAGE
+
+    renumber_residue_continuously selection[, start_resi]
+
+    ARGUMENTS
+
+    selection = str
+        PyMOL selection containing residues to renumber.
+
+    start_resi = int or None
+        Starting residue number for renumbering. If omitted, numbering starts
+        from the smallest residue number present in the selection.
+
+    EXAMPLE
+
+    renumber_residue_continuously chain A and resi 1-10+15-20
+    renumber_residue_continuously polymer.protein and chain B, 101
+
+    NOTES
+
+    Only selections from a single chain are supported.
     """
 
     chain_list = []
@@ -26,7 +52,10 @@ def renumber_residue_continuously(selection: str):
 
     renumbered_resi_list = []
     mapping = {}
-    next_id = min(list(map(lambda x: x[1], resi_list)))
+    if start_resi is None:
+        next_id = min(list(map(lambda x: x[1], resi_list)))
+    else:
+        next_id = start_resi
     for index, resi in resi_list:
         if resi not in mapping:
             mapping[resi] = next_id
